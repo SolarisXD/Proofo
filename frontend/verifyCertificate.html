@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Let's Verify Certificate</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🔍 Let's `Verify Certificate</h1>
+
+      <form id="verifyCertificate">
+        <input type="text" id="year" placeholder="Year" required />
+        <input type="text" id="verifyCertificateId" placeholder="Enter Certificate ID" required />
+        <button type="submit" class="btn">Verify</button>
+      </form>
+
+      <div id="verificationResult" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("verifyCertificate").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const certId = document.getElementById("verifyCertificateId").value.trim();
+      const resultDiv = document.getElementById("verificationResult");
+
+      if (!certId) {
+        resultDiv.innerHTML = "<p>Please enter a certificate ID.</p>";
+        return;
+      }
+
+      fetch(`/api/verifyCertificate/${certId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Ensure the response includes the necessary fields
+          if (!data || data.status === "not_found" || !data.certificate) {
+            resultDiv.innerHTML = "<h3 style='color: red;'>❌ Certificate not found.</h3>";
+            return;
+          }
+
+          let statusColor = {
+            valid: "green",
+            expired: "orange",
+            revoked: "red",
+            tampered: "crimson"
+          };
+
+          let badgeClass = {
+            valid: "badge valid",
+            expired: "badge expired",
+            revoked: "badge revoked",
+            tampered: "badge tampered"
+          };
+
+          // Ensure data.certificate contains the necessary fields
+          resultDiv.innerHTML = `
+            <div class="card" style="position: relative; max-width: 400px; margin: auto;">
+              <span class="${badgeClass[data.status]}" style="position:absolute; top:-10px; right:-10px; padding:5px 10px; border-radius:6px; color:#fff;">
+                ${data.status.toUpperCase()}
+              </span>
+              <h3 style="color: ${statusColor[data.status]}; margin-top: 30px;">
+                ${data.status === "valid" ? "✅" : "⚠️"} ${data.status.toUpperCase()}
+              </h3>
+              <p><strong>Name:</strong> ${data.certificate.name || 'N/A'}</p>
+              <p><strong>ID:</strong> ${data.certificate.id}</p>
+              <p><strong>Course:</strong> ${data.certificate.course || 'N/A'}</p>
+              <p><strong>Issued On:</strong> ${data.certificate.issuedOn || 'N/A'}</p>
+              <p><strong>Expires On:</strong> ${data.certificate.expiryDate || 'N/A'}</p>
+            </div>
+          `;
+        })
+        .catch((err) => {
+          console.error("Verification error:", err);
+          resultDiv.innerHTML = "<h3 style='color: orange;'>⚠️ Error verifying certificate.</h3>";
+        });
+
+    });
+  </script>
+</body>
+</html>

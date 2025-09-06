@@ -1,0 +1,145 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    text-align: center;
+    padding: 20px;
+    max-width: 100%;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 45px;
+    border-radius: 20px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    max-width: 420px;
+    margin: auto;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+h1 {
+    font-size: 30px;
+    margin-bottom: 12px;
+    color: #1a237e;
+}
+
+.highlight {
+    color: #00c853;
+    font-weight: 600;
+}
+
+.subtitle {
+    font-size: 15.5px;
+    color: #666;
+    margin-bottom: 28px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.btn {
+    padding: 12px;
+    text-decoration: none;
+    background-color: #00c853;
+    color: white;
+    border-radius: 10px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #009624;
+    transform: translateY(-2px);
+}
+
+.btn.outline {
+    background-color: transparent;
+    border: 2px solid #00c853;
+    color: #00c853;
+}
+
+.btn.outline:hover {
+    background-color: #00c853;
+    color: white;
+}
+
+/* Search Bar */
+.search-bar {
+    margin-top: 30px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid #00c853;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #009624;
+}
+
+/* Status Badge */
+.badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: white;
+}
+
+.badge.valid {
+    background-color: #00c853;
+}
+
+.badge.revoked {
+    background-color: #f44336;
+}
+
+.badge.expired {
+    background-color: #ff9800;
+}
+
+.badge.tampered {
+    background-color: #9c27b0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .card {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+
+    .actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+}

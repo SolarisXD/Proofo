@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Revoke Certificate</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🛑 Revoke Certificate</h1>
+
+      <form id="revokeCertificate">
+        <input type="text" id="revokeCertificateId" placeholder="Certificate ID to Revoke" required />
+        <button type="submit" class="btn outline">Revoke</button>
+      </form>
+
+      <div id="revokeResult" style="margin-top: 20px;"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("revokeCertificate").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const certId = document.getElementById("revokeCertificateId").value.trim();
+      const resultDiv = document.getElementById("revokeResult");
+
+      fetch(`/api/revokeCertificate/${certId}`, { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            resultDiv.innerHTML = `<h3 style="color: red;">❌ Certificate Revoked</h3>`;
+          } else {
+            resultDiv.innerHTML = `<h3 style="color: orange;">⚠️ ${data.message || "Error revoking."}</h3>`;
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          resultDiv.innerHTML = `<h3 style="color: orange;">⚠️ Server Error</h3>`;
+        });
+    });
+  </script>
+</body>
+</html>
